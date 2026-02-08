@@ -1,0 +1,26 @@
+well lets take a big picture whats happening actually
+
+when you run your kernel in qemu:
+
+laptop
+ └── qemu (pretends to be a risc-v machine)
+      └── OpenSBI (firmware, like bios/uefi)
+           └── kernel
+
+and thats not a normal program thats the first software layer that runs after firmware
+
+
+firstly why we made run.sh
+because initially there is no OS so 
+there is not PATH variable, no file system, no loader, no compiler nothing ...
+so run.sh is like a deterministic contract .. like this is the exact compiler, this is the exact loader etcetc
+
+
+when a cpu starts there is no RAM configured, no stack, no console etc etc 
+your kernel expects RAM to exists and some way to print and debug or some stuff like that
+
+so OpenSBI does that only ... its a firmware tho .. not a part of os 
+it sets up machine mode stuff and switches to supervisor mode ..
+ 
+inshort without OpenSBI your kernel wont run
+
