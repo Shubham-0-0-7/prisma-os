@@ -24,3 +24,51 @@ it sets up machine mode stuff and switches to supervisor mode ..
  
 inshort without OpenSBI your kernel wont run
 
+when OpenSBI finishes .. it does something very simple 
+it just sets the pc to 0x80200000 or whatever address 
+
+linker script has this line :
+ENTRY(boot)
+. = 0x80200000;
+this means that the function boot() is placed exactly 0x80200000
+
+when cpu jumps to the code the stack pointer (sp) points to garbage value
+so 
+mv sp, __stack_top
+this line means now stack pointer is at correct placed like inshort it says 
+RAM is safe here you can point here
+
+
+
+
+stacks on risc v grows downwards means it grows towards lower address
+if the stack memory is 
+0x80200000  <-  lower memory
+...
+0x80220018  <- higher memory
+
+then we point or set sp = 0x80220018
+then when stack is used 
+sp -= 4
+sp -= 4 
+.
+.
+
+like this
+
+it grows downward safely inside the reserved region ... 
+if you set it to the start instead... first push would corrupt memory below 
+
+so we use the end of the stack region.
+
+
+now why __attribute__((naked))
+normally compilerwould automatically generates function prologue 
+In assembly language programming, the function prologue is a few lines of code at the 
+beginning of a function, which prepare the stack and registers for use within the function.
+source : wiki -- https://en.wikipedia.org/wiki/Function_prologue_and_epilogue
+
+but right now if compiler tries to do so 
+the sp and other things will point to the garbage value and might crash also 
+so the __attribute__((naked)) tells that do not add prologue/epilogue 
+everything will be done manually 
