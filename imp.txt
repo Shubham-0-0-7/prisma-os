@@ -21,7 +21,7 @@ your kernel expects RAM to exists and some way to print and debug or some stuff 
 
 so OpenSBI does that only ... its a firmware tho .. not a part of os 
 it sets up machine mode stuff and switches to supervisor mode ..
- 
+
 inshort without OpenSBI your kernel wont run
 
 when OpenSBI finishes .. it does something very simple 
@@ -41,11 +41,13 @@ RAM is safe here you can point here
 
 
 
-stacks on risc v grows downwards means it grows towards lower address
+stacks on grows downwards means it grows towards lower address
 if the stack memory is 
+...
 0x80200000  <-  lower memory
 ...
 0x80220018  <- higher memory
+
 
 then we point or set sp = 0x80220018
 then when stack is used 

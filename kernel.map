@@ -1,7 +1,7 @@
      VMA      LMA     Size Align Out     In      Symbol
        0        0 80200000     1 . = 0x80200000
 80200000 80200000       4a     2 .text
-80200000 80200000        e     2         /var/folders/p9/wz8r4dxd3qd7w8_vtcwc4hlm0000gn/T/kernel-426f38.o:(.text.boot)
+80200000 80200000        e     2         /var/folders/p9/wz8r4dxd3qd7w8_vtcwc4hlm0000gn/T/kernel-60737d.o:(.text.boot)
 80200000 80200000        0     1                 .L0 
 80200000 80200000        0     1                 .L0 
 80200000 80200000        0     1                 $x
@@ -9,7 +9,7 @@
 80200000 80200000        e     1                 boot
 8020000e 8020000e        0     1                 .L0 
 8020000e 8020000e        0     1                 .L0 
-8020000e 8020000e       3c     2         /var/folders/p9/wz8r4dxd3qd7w8_vtcwc4hlm0000gn/T/kernel-426f38.o:(.text)
+8020000e 8020000e       3c     2         /var/folders/p9/wz8r4dxd3qd7w8_vtcwc4hlm0000gn/T/kernel-60737d.o:(.text)
 8020000e 8020000e        0     1                 .L0 
 8020000e 8020000e        0     1                 .L0 
 8020000e 8020000e        0     1                 $x
@@ -40,27 +40,27 @@
 8020004c 8020004c    20000     1 . += 128 * 1024
 8022004c 8022004c        0     1 __stack_top = .
        0        0       63     1 .debug_loclists
-       0        0       63     1         /var/folders/p9/wz8r4dxd3qd7w8_vtcwc4hlm0000gn/T/kernel-426f38.o:(.debug_loclists)
+       0        0       63     1         /var/folders/p9/wz8r4dxd3qd7w8_vtcwc4hlm0000gn/T/kernel-60737d.o:(.debug_loclists)
        0        0        0     1                 $d
        c        c        0     1                 .L0 
        0        0       e1     1 .debug_abbrev
-       0        0       e1     1         /var/folders/p9/wz8r4dxd3qd7w8_vtcwc4hlm0000gn/T/kernel-426f38.o:(.debug_abbrev)
+       0        0       e1     1         /var/folders/p9/wz8r4dxd3qd7w8_vtcwc4hlm0000gn/T/kernel-60737d.o:(.debug_abbrev)
        0        0        0     1                 $d
        0        0       e3     1 .debug_info
-       0        0       e3     1         /var/folders/p9/wz8r4dxd3qd7w8_vtcwc4hlm0000gn/T/kernel-426f38.o:(.debug_info)
+       0        0       e3     1         /var/folders/p9/wz8r4dxd3qd7w8_vtcwc4hlm0000gn/T/kernel-60737d.o:(.debug_info)
        0        0        0     1                 $d
        0        0       17     1 .debug_rnglists
-       0        0       17     1         /var/folders/p9/wz8r4dxd3qd7w8_vtcwc4hlm0000gn/T/kernel-426f38.o:(.debug_rnglists)
+       0        0       17     1         /var/folders/p9/wz8r4dxd3qd7w8_vtcwc4hlm0000gn/T/kernel-60737d.o:(.debug_rnglists)
        0        0        0     1                 $d
        c        c        0     1                 .L0 
        0        0       48     1 .debug_str_offsets
-       0        0       48     1         /var/folders/p9/wz8r4dxd3qd7w8_vtcwc4hlm0000gn/T/kernel-426f38.o:(.debug_str_offsets)
+       0        0       48     1         /var/folders/p9/wz8r4dxd3qd7w8_vtcwc4hlm0000gn/T/kernel-60737d.o:(.debug_str_offsets)
        0        0        0     1                 $d
        8        8        0     1                 .L0 
        0        0       a6     1 .debug_str
        0        0       a6     1         <internal>:(.debug_str)
        0        0       14     1 .debug_addr
-       0        0       14     1         /var/folders/p9/wz8r4dxd3qd7w8_vtcwc4hlm0000gn/T/kernel-426f38.o:(.debug_addr)
+       0        0       14     1         /var/folders/p9/wz8r4dxd3qd7w8_vtcwc4hlm0000gn/T/kernel-60737d.o:(.debug_addr)
        0        0        0     1                 $d
        8        8        0     1                 .L0 
        0        0       3b     1 .comment
@@ -68,11 +68,11 @@
        0        0       4e     1 .riscv.attributes
        0        0       4e     1         <internal>:(.riscv.attributes)
        0        0       44     4 .debug_frame
-       0        0       44     4         /var/folders/p9/wz8r4dxd3qd7w8_vtcwc4hlm0000gn/T/kernel-426f38.o:(.debug_frame)
+       0        0       44     4         /var/folders/p9/wz8r4dxd3qd7w8_vtcwc4hlm0000gn/T/kernel-60737d.o:(.debug_frame)
        0        0        0     1                 .L0 
        0        0        0     1                 $d
        0        0       a5     1 .debug_line
-       0        0       a5     1         /var/folders/p9/wz8r4dxd3qd7w8_vtcwc4hlm0000gn/T/kernel-426f38.o:(.debug_line)
+       0        0       a5     1         /var/folders/p9/wz8r4dxd3qd7w8_vtcwc4hlm0000gn/T/kernel-60737d.o:(.debug_line)
        0        0        0     1                 .Lline_table_start0
        0        0        0     1                 $d
        0        0       2e     1 .debug_line_str

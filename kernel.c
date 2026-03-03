@@ -13,8 +13,7 @@ void *memset(void *buf, char c, size_t n) {
 }
 
 void kernel_main(void) {
-    memset(__bss, 0, (size_t) __bss_end - (size_t) __bss);
-    
+    memset(__bss, 0, (size_t) __bss_end - (size_t) __bss); 
     for (;;);
 }
 
