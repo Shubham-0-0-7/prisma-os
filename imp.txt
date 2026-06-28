@@ -75,3 +75,11 @@ the sp and other things will point to the garbage value and might crash also
 so the __attribute__((naked)) tells that do not add prologue/epilogue 
 everything will be done manually 
 
+
+
+
+
+
+UEFI vs. legacy BIOS
+
+A common misconception is that UEFI and BIOS are mutually exclusive. In reality, both legacy motherboards and UEFI-based motherboards both include BIOS ROMs. The differences are in where they find the bootloader/OS, how they prepare the system before executing it, and what convenience functions they provide. 
