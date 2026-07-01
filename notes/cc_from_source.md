@@ -62,3 +62,268 @@ so now, setup directories and download sources:
 okay i will give next steps afterwards .. its been around 4-5 hours and i am still not able to make a cross compiler .. i will update this once i done with it 
 
 
+## building the cross compiler (i686-elf)
+
+before starting, i highly recommend reading the official osdev wiki page once. i am following the same guide here, but there is one important difference that i'll explain later.
+
+https://wiki.osdev.org/GCC_Cross-Compiler
+
+### 1. install the required dependencies
+
+on fedora:
+
+```bash
+sudo dnf install gcc gcc-c++ make bison flex gmp-devel mpfr-devel libmpc-devel texinfo nasm qemu libgcc.i686
+```
+
+### 2. choose a location for the toolchain
+
+i kept everything inside `~/src` and installed the final compiler into `~/opt/cross`.
+
+```bash
+mkdir -p ~/src
+mkdir -p ~/opt/cross
+```
+
+set the required environment variables.
+
+```bash
+export PREFIX="$HOME/opt/cross"
+export TARGET=i686-elf
+export PATH="$PREFIX/bin:$PATH"
+```
+
+---
+
+## building binutils
+
+first download binutils.
+
+```bash
+cd ~/src
+
+wget https://ftp.gnu.org/gnu/binutils/binutils-2.39.tar.gz
+
+tar -xzf binutils-2.39.tar.gz
+```
+
+create a separate build directory.
+
+```bash
+mkdir build-binutils
+cd build-binutils
+```
+
+configure it.
+
+```bash
+../binutils-2.39/configure \
+    --target=$TARGET \
+    --prefix="$PREFIX" \
+    --with-sysroot \
+    --disable-nls \
+    --disable-werror
+```
+
+compile and install.
+
+```bash
+make -j$(nproc)
+
+make install
+```
+
+verify everything.
+
+```bash
+ls ~/opt/cross/bin
+```
+
+you should see tools like
+
+```text
+i686-elf-as
+i686-elf-ld
+i686-elf-ar
+i686-elf-ranlib
+...
+```
+
+if those exist, binutils is done.
+
+---
+
+# do not use gcc 12, 13 or 14 if you're on fedora 44
+
+this is the part where i wasted around 4 to 5 hours.
+
+almost every tutorial i found used gcc 12 or 13. i followed them exactly, and every single version failed while compiling `libcody`.
+
+the error looked something like
+
+```text
+error: no matching function for call to 'S2C(const char8_t...)'
+```
+
+this is because fedora 44 ships with gcc 16 as the host compiler, while gcc 12, 13 and 14 were never really tested against a host this new.
+
+i tried:
+
+- gcc 14
+- gcc 13
+- gcc 12
+- patching source files
+- replacing `u8""` strings
+- editing libcody
+- rebuilding everything multiple times
+
+none of it worked.
+
+if you're on fedora 44, just save yourself the headache and build gcc 16 instead.
+
+---
+
+# building gcc 16
+
+download it.
+
+```bash
+cd ~/src
+
+wget https://ftp.gnu.org/gnu/gcc/gcc-16.1.0/gcc-16.1.0.tar.xz
+
+tar -xf gcc-16.1.0.tar.xz
+```
+
+download gcc's prerequisites.
+
+```bash
+cd gcc-16.1.0
+
+./contrib/download_prerequisites
+
+cd ..
+```
+
+this downloads compatible versions of gmp, mpfr, mpc and isl directly into the source tree.
+
+---
+
+create a fresh build directory.
+
+```bash
+mkdir build-gcc
+
+cd build-gcc
+```
+
+configure gcc.
+
+```bash
+../gcc-16.1.0/configure \
+    --target=$TARGET \
+    --prefix="$PREFIX" \
+    --disable-nls \
+    --enable-languages=c \
+    --without-headers
+```
+
+don't worry if configure prints warnings about unsupported target libraries.
+
+for a bare metal target like `i686-elf`, that's completely normal.
+
+---
+
+build the compiler.
+
+```bash
+make -j$(nproc) all-gcc
+```
+
+this step took around **40 to 45 minutes** on my ryzen 3 3200u.
+
+don't panic if it keeps printing compiler output for a long time.
+
+---
+
+once that's done:
+
+```bash
+make -j$(nproc) all-target-libgcc
+```
+
+then install everything.
+
+```bash
+make install-gcc
+
+make install-target-libgcc
+```
+
+---
+
+verify the installation.
+
+```bash
+~/opt/cross/bin/i686-elf-gcc --version
+```
+
+you should see something similar to
+
+```text
+i686-elf-gcc (gcc) 16.1.0
+```
+
+congratulations 🎉
+
+you now have a working cross compiler.
+
+---
+
+## add it to your path permanently
+
+if you're using zsh:
+
+```bash
+echo 'export PATH="$HOME/opt/cross/bin:$PATH"' >> ~/.zshrc
+
+source ~/.zshrc
+```
+
+for bash:
+
+```bash
+echo 'export PATH="$HOME/opt/cross/bin:$PATH"' >> ~/.bashrc
+
+source ~/.bashrc
+```
+
+after that you can simply run
+
+```bash
+i686-elf-gcc --version
+```
+
+from anywhere.
+
+---
+
+## some mistakes i made so you don't have to
+
+- don't build gcc inside its source directory. always create a separate `build-gcc` folder.
+- don't skip `./contrib/download_prerequisites`.
+- don't edit gcc source files unless you actually know the root cause.
+- if you're on fedora 44, don't waste time trying gcc 12, 13 or 14. build gcc 16 instead.
+- don't forget `make install-gcc` and `make install-target-libgcc`. i finished building everything and then wondered why `i686-elf-gcc` didn't exist 😭
+
+---
+
+## finally
+
+this honestly ended up being the hardest part of the bare bones tutorial for me.
+
+writing the kernel was supposed to be the scary part, but getting a compiler that could actually compile the kernel turned out to be the real boss fight.
+
+hopefully this saves someone else from spending half a day wondering why every tutorial on the internet keeps throwing `char8_t` errors on a modern fedora installation.
+
+
